@@ -6,3 +6,6 @@ node_modules/
 
 # Build files
 dist/
+
+# Database
+db.sqlite3
