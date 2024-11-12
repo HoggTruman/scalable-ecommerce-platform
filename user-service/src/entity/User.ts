@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Login } from "./Login";
 
 @Entity()
 export class User {
@@ -20,4 +21,7 @@ export class User {
     // as unix timestamp
     @Column()
     registeredAt!: number
+
+    @OneToMany(() => Login, (login) => login.user)
+    logins: Login[] = [];
 }
