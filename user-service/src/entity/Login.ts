@@ -12,6 +12,9 @@ export class Login {
     @Column()
     loginAt!: number;
 
-    @ManyToOne(() => User, (user) => user.logins)
+    @ManyToOne(() => User, (user) => user.logins, {
+        onDelete: "CASCADE",
+        orphanedRowAction: "delete",
+    })
     user!: User;
 }

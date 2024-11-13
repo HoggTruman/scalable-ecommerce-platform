@@ -22,6 +22,8 @@ export class User {
     @Column()
     registeredAt!: number
 
-    @OneToMany(() => Login, (login) => login.user)
+    @OneToMany(() => Login, (login) => login.user, {
+        cascade: true
+    })
     logins: Login[] = [];
 }
