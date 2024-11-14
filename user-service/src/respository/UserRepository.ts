@@ -1,8 +1,12 @@
 import { User } from "../entity/User";
-import { AppDataSource } from "../data-source";
+import { DataSource } from "typeorm";
 
 export class UserRepository {
-    private readonly _userRepo = AppDataSource.getRepository(User);
+    private readonly _userRepo;
+
+    constructor(dataSource: DataSource) {
+        this._userRepo = dataSource.getRepository(User);
+    }
 
     public async getUserByEmail(userEmail: string) : Promise<User | null> {
         return await this._userRepo.findOneBy({
