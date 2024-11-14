@@ -18,9 +18,12 @@ export class User {
     @Column()
     passHash!: string;
 
+    @Column()
+    salt!: string;
+
     // as unix timestamp
     @Column()
-    registeredAt!: number
+    registeredAt!: number;
 
     @OneToMany(() => Login, (login) => login.user, {
         cascade: true

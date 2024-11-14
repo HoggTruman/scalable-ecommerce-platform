@@ -4,6 +4,7 @@ export const TEST_USERS = [
         lastName: "lastName1",
         email: `email1`,
         passHash: `passHash1`,
+        salt: "salt1",
         registeredAt: 438918
     },
     {
@@ -11,6 +12,7 @@ export const TEST_USERS = [
         lastName: "lastName2",
         email: `email2`,
         passHash: `passHash2`,
+        salt: "salt1",
         registeredAt: 2358970
     },
     {
@@ -18,6 +20,7 @@ export const TEST_USERS = [
         lastName: "lastName3",
         email: `email3`,
         passHash: `passHash3`,
+        salt: "salt1",
         registeredAt: 9184317
     }
 ];
