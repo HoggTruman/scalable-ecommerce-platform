@@ -13,7 +13,7 @@ beforeAll(async () => {
     loginRepo = TestDataSource.getRepository(Login);
 });
 
-describe("UserRepository Tests", () => {
+describe("TestUtils Tests", () => {
     test("sets up correctly", async () => {
         // Ensure empty db
         await TestUtils.clearTables();
