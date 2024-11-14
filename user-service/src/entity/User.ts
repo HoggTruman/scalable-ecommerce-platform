@@ -25,5 +25,5 @@ export class User {
     @OneToMany(() => Login, (login) => login.user, {
         cascade: true
     })
-    logins: Login[] = [];
+    logins!: Login[];
 }
