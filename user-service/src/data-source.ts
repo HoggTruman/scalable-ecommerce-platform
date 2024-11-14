@@ -8,14 +8,14 @@ dotenv.config();
 
 const dbPath = process.env.NODE_ENV === "test"? ":memory:": process.env.DB_PATH;
 
-if (!dbPath) {
+if (dbPath === undefined) {
     throw Error("DB_PATH environment variable must be set.");
 }  
 
 export const AppDataSource = new DataSource({
     type: "better-sqlite3",
     database: dbPath,
-    synchronize: true,
+    synchronize: process.env.NODE_ENV === "test",
     logging: false,
     entities: [User, Login],
     migrations: [],
