@@ -6,7 +6,7 @@ import { Login } from "./entity/Login";
 
 dotenv.config();
 
-const dbPath = process.env.NODE_ENV === "test"? ":memory:": process.env.DB_PATH;
+const dbPath = process.env.DB_PATH;
 
 if (dbPath === undefined) {
     throw Error("DB_PATH environment variable must be set.");
@@ -15,9 +15,18 @@ if (dbPath === undefined) {
 export const AppDataSource = new DataSource({
     type: "better-sqlite3",
     database: dbPath,
-    synchronize: process.env.NODE_ENV === "test",
+    synchronize: false,
     logging: false,
     entities: [User, Login],
     migrations: [],
     subscribers: [],
 });
+
+
+AppDataSource.initialize()
+    .then(() => {
+        console.log("Data Source has been initialized!")
+    })
+    .catch((err) => {
+        console.error("Error during Data Source initialization", err)
+    })

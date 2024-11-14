@@ -1,23 +1,23 @@
 import { User } from "../src/entity/User";
 import { Login } from "../src/entity/Login";
 import { TEST_LOGINS, TEST_USERS } from "./fixtureData";
-import { DataSource } from "typeorm";
+import { TestDataSource } from "./test-data-source";
 
 
 export class TestUtils {
-    public static async clearTables(dataSource: DataSource) : Promise<void>{
-        const entities = dataSource.entityMetadatas;
+    public static async clearTables() : Promise<void>{
+        const entities = TestDataSource.entityMetadatas;
 
         for (const entity of entities) {
-            const repository = dataSource.getRepository(entity.name);
+            const repository = TestDataSource.getRepository(entity.name);
             await repository.clear();
         }
     }
 
 
-    public static async addFixtureData(dataSource: DataSource) : Promise<void> {
-        const userRepo = dataSource.getRepository(User);
-        const loginRepo = dataSource.getRepository(Login);
+    public static async addFixtureData() : Promise<void> {
+        const userRepo = TestDataSource.getRepository(User);
+        const loginRepo = TestDataSource.getRepository(Login);
 
         await userRepo.insert(TEST_USERS);
         await loginRepo.insert(TEST_LOGINS);        

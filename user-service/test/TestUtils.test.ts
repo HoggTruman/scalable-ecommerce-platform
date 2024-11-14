@@ -1,30 +1,27 @@
-import { DataSource, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { Login } from "../src/entity/Login";
 import { User } from "../src/entity/User";
-import { AppDataSource } from "../src/data-source";
 import { TestUtils } from "./TestUtils";
 import { TEST_LOGINS, TEST_USERS } from "./fixtureData";
-
-let testDataSource: DataSource = AppDataSource;
+import { TestDataSource } from "./test-data-source";
 
 let userRepo: Repository<User>;
 let loginRepo: Repository<Login>;
 
 beforeAll(async () => {
-    await testDataSource.initialize();
-    userRepo = testDataSource.getRepository(User);
-    loginRepo = testDataSource.getRepository(Login);
+    userRepo = TestDataSource.getRepository(User);
+    loginRepo = TestDataSource.getRepository(Login);
 });
 
 describe("UserRepository Tests", () => {
     test("sets up correctly", async () => {
         // Ensure empty db
-        await TestUtils.clearTables(testDataSource);
+        await TestUtils.clearTables();
         expect(await userRepo.find()).toHaveLength(0);
         expect(await loginRepo.find()).toHaveLength(0);
 
         // Ensure test data is present
-        await TestUtils.addFixtureData(testDataSource);
+        await TestUtils.addFixtureData();
 
         const users = await userRepo.find();
         expect(users).toHaveLength(TEST_USERS.length);
@@ -32,7 +29,7 @@ describe("UserRepository Tests", () => {
         expect(logins).toHaveLength(TEST_LOGINS.length);
 
         // Ensure empty db
-        await TestUtils.clearTables(testDataSource);
+        await TestUtils.clearTables();
         expect(await userRepo.find()).toHaveLength(0);
         expect(await loginRepo.find()).toHaveLength(0);
     });
