@@ -17,6 +17,8 @@ beforeAll(async () => {
 });
 
 
+
+
 describe("UserRepository Tests", () => {
     beforeEach(async () => {
         await TestUtils.clearTables();
@@ -37,6 +39,7 @@ describe("UserRepository Tests", () => {
             expect(resultUser).toMatchObject(testUser);
         });
 
+
         test("returns null when not present", async () => {
             // Arrange 
             const userRepository = new UserRepository(TestDataSource);
@@ -50,51 +53,62 @@ describe("UserRepository Tests", () => {
     });
 
 
+
+
     describe("addUser Tests", () => {
         test("Adds new user to database", async () => {
             // Arrange 
             const userRepository = new UserRepository(TestDataSource);
 
-            const newUser = new User();
-            newUser.firstName = "testfirstName";
-            newUser.lastName = "testLastName";
-            newUser.email = "testEmail";
-            newUser.passHash = "testPassHash";
-            newUser.salt = "testSalt";
-            newUser.registeredAt = 984148793;
+            const testFirstName = "testfirstName";
+            const testLastName = "testLastName";
+            const testEmail = "testEmail";
+            const testPlainPassword = "testPassword";
             
             // Act
-            const addUserResult = await userRepository.addUser(newUser);
-            const retrievedUser = await userRepo.findOneBy({email: newUser.email});
+            const addUserResult = await userRepository.addUser(
+                testFirstName,
+                testLastName,
+                testEmail,
+                testPlainPassword
+            );
+            const retrievedUser = await userRepo.findOneBy({email: testEmail});
 
             // Assert
-            expect(addUserResult).toMatchObject(newUser);
-            expect(retrievedUser).toMatchObject(newUser);
+            expect(addUserResult).not.toBeNull();
+            expect(addUserResult?.firstName).toBe(testFirstName);
+            expect(addUserResult?.lastName).toBe(testLastName);
+            expect(addUserResult?.email).toBe(testEmail);
+            expect(retrievedUser).not.toBeNull();
         });
+
 
         test("New user not added when email already present in database", async () => {
             // Arrange
             const userRepository = new UserRepository(TestDataSource);
-            const testUser = TEST_USERS[0];
+            const existingUser = TEST_USERS[0];
 
-            const newUser = new User();
-            newUser.firstName = "newFirstName";
-            newUser.lastName = "newLastName";
-            newUser.email = testUser.email;
-            newUser.passHash = "newPassHash";
-            newUser.salt = "newSalt";
-            newUser.registeredAt = 11;
+            const testFirstName = "testfirstName";
+            const testLastName = "testLastName";
+            const testEmail = existingUser.email;
+            const testPlainPassword = "testPassword";
 
             // Act
-            const addUserResult = await userRepository.addUser(newUser);
-            const retrievedUser = await userRepo.findOneBy({email: newUser.email});
+            const addUserResult = await userRepository.addUser(
+                testFirstName,
+                testLastName,
+                testEmail,
+                testPlainPassword
+            );
+            const retrievedUser = await userRepo.findOneBy({email: existingUser.email});
 
             // Assert
             expect(addUserResult).toBeNull();
-            expect(retrievedUser).not.toMatchObject(newUser);
-            expect(retrievedUser).toMatchObject(testUser);
+            expect(retrievedUser).toMatchObject(existingUser);
         });
     });
+
+
 
 
     describe("deleteUserByEmail Tests", () => {
@@ -111,6 +125,7 @@ describe("UserRepository Tests", () => {
             expect(deleteUserResult?.email).toBe(testUser.email);
             expect(retrievedUser).toBeNull();
         });
+
 
         test("Returns null when no user with provided email", async () => {
             // Arrange

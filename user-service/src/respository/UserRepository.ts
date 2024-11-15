@@ -1,5 +1,6 @@
 import { User } from "../entity/User";
 import { DataSource } from "typeorm";
+import bcrypt from "bcrypt";
 
 export class UserRepository {
     private readonly _userRepo;
@@ -14,14 +15,21 @@ export class UserRepository {
         });
     }
 
-    public async addUser(newUser: User) : Promise<User | null> {
+    public async addUser(firstName: string, lastName: string, email: string, plainPassword: string) : Promise<User | null> {
         const existingUser = await this._userRepo.findOneBy({
-            email: newUser.email
+            email: email
         });
 
         if (existingUser != null) {
             return null;
         }
+
+        const newUser : User = new User();
+        newUser.firstName = firstName;
+        newUser.lastName = lastName;
+        newUser.email = email;
+        newUser.password = await bcrypt.hash(plainPassword, 10);
+        newUser.registeredAt = Date.now();
 
         return await this._userRepo.save(newUser);
     }

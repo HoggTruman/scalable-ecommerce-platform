@@ -3,27 +3,25 @@ export const TEST_USERS = [
         firstName: "firstName1",
         lastName: "lastName1",
         email: `email1`,
-        passHash: `passHash1`,
-        salt: "salt1",
+        password: 'a'.repeat(60),
         registeredAt: 438918
     },
     {
         firstName: "firstName2",
         lastName: "lastName2",
         email: `email2`,
-        passHash: `passHash2`,
-        salt: "salt1",
+        password: 'b'.repeat(60),
         registeredAt: 2358970
     },
     {
         firstName: "firstName3",
         lastName: "lastName3",
         email: `email3`,
-        passHash: `passHash3`,
-        salt: "salt1",
+        password: 'c'.repeat(60),
         registeredAt: 9184317
     }
 ];
+
 
 export const TEST_LOGINS = [
     {

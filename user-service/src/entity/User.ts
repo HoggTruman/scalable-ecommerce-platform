@@ -15,11 +15,8 @@ export class User {
     @Column()
     email!: string;
 
-    @Column()
-    passHash!: string;
-
-    @Column()
-    salt!: string;
+    @Column({length: 60})
+    password!: string;
 
     // as unix timestamp
     @Column()
