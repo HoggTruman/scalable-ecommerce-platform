@@ -9,6 +9,7 @@ let userRepo: Repository<User>;
 let loginRepo: Repository<Login>;
 
 beforeAll(async () => {
+    await TestDataSource.initialize()
     userRepo = TestDataSource.getRepository(User);
     loginRepo = TestDataSource.getRepository(Login);
 });

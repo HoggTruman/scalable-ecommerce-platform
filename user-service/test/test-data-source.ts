@@ -14,11 +14,3 @@ export const TestDataSource = new DataSource({
     subscribers: [],
 });
 
-
-TestDataSource.initialize()
-    .then(() => {
-        console.log("Test Data Source has been initialized!")
-    })
-    .catch((err) => {
-        console.error("Error during Test Data Source initialization", err)
-    })
