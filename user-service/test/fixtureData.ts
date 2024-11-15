@@ -25,17 +25,17 @@ export const TEST_USERS = [
 
 export const TEST_LOGINS = [
     {
-        ip: 1,
+        ip: "ip1",
         loginAt: 984931,
         user: TEST_USERS[0]
     },
     {
-        ip: 1,
+        ip: "ip2",
         loginAt: 9849352,
         user: TEST_USERS[0]
     },
     {
-        ip: 2,
+        ip: "ip3",
         loginAt: 231513,
         user: TEST_USERS[1]
     },

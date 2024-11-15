@@ -7,7 +7,7 @@ export class Login {
     id!: number;
 
     @Column()
-    ip!: number;
+    ip!: string;
 
     @Column()
     loginAt!: number;
