@@ -1,5 +1,5 @@
 import { validate } from "class-validator";
-import { RegisterDto } from "../../dto/RegisterDto";
+import { RegisterDto } from "../../src/dto/RegisterDto";
 
 const VALID_FIRSTNAME: string = "firstName";
 const VALID_LASTNAME: string = "lastName";

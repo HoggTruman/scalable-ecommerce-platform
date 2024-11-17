@@ -1,5 +1,6 @@
 import { validate } from "class-validator";
-import { LoginDto } from "../../dto/LoginDto";
+import { LoginDto } from "../../src/dto/LoginDto";
+
 
 const VALID_EMAIL: string = "example@example.com";
 const VALID_PASSWORD: string = "Password1";
