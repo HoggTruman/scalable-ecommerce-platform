@@ -1,5 +1,5 @@
-import { createJWT } from "../src/createJWT"
-import { User } from "../src/entity/User";
+import { createJWT } from "../../src/createJWT"
+import { User } from "../../src/entity/User";
 import jwt from "jsonwebtoken";
 
 describe("createJWT Tests", () => {

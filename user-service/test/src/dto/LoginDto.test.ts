@@ -1,22 +1,19 @@
 import { validate } from "class-validator";
-import { RegisterDto } from "../../src/dto/RegisterDto";
+import { LoginDto } from "../../../src/dto/LoginDto";
 
-const VALID_FIRSTNAME: string = "firstName";
-const VALID_LASTNAME: string = "lastName";
+
 const VALID_EMAIL: string = "example@example.com";
 const VALID_PASSWORD: string = "Password1";
 
 
-describe("RegisterDto validation tests", () => {
+describe("LoginDto validation tests", () => {
     test.each([
         "Password1", // no symbols
         "aaaa23142$!$Aaoanfnfipowahafwipfhbiapwsf", // max length
         "pass1Aa!" // min length
     ]) ("No errors with valid password (%s)", async testPassword => {
         // Arrange
-        const testDto : RegisterDto = new RegisterDto(
-            VALID_FIRSTNAME,
-            VALID_LASTNAME,
+        const testDto : LoginDto = new LoginDto(
             VALID_EMAIL,
             testPassword
         );
@@ -31,9 +28,7 @@ describe("RegisterDto validation tests", () => {
 
     test("Receive an error when password below 8 characters", async () => {
         // Arrange
-        const testDto : RegisterDto = new RegisterDto(
-            VALID_FIRSTNAME,
-            VALID_LASTNAME,
+        const testDto : LoginDto = new LoginDto(
             VALID_EMAIL,
             "1aA!abc"
         );
@@ -48,9 +43,7 @@ describe("RegisterDto validation tests", () => {
 
     test("Receive an error when password above 40 characters", async () => {
         // Arrange
-        const testDto : RegisterDto = new RegisterDto(
-            VALID_FIRSTNAME,
-            VALID_LASTNAME,
+        const testDto : LoginDto = new LoginDto(
             VALID_EMAIL,
             "1Aa!sfhukkhsfudkudksfdkhfsdkhfdsksfdhksdfhksfdkdsfukdusfkhsfukufds"
         );
@@ -65,9 +58,7 @@ describe("RegisterDto validation tests", () => {
 
     test("Receive an error when password contains no digits", async () => {
         // Arrange
-        const testDto : RegisterDto = new RegisterDto(
-            VALID_FIRSTNAME,
-            VALID_LASTNAME,
+        const testDto : LoginDto = new LoginDto(
             VALID_EMAIL,
             "Aa!saaaaa"
         );
@@ -82,9 +73,7 @@ describe("RegisterDto validation tests", () => {
 
     test("Receive an error when password contains no uppercase characters", async () => {
         // Arrange
-        const testDto : RegisterDto = new RegisterDto(
-            VALID_FIRSTNAME,
-            VALID_LASTNAME,
+        const testDto : LoginDto = new LoginDto(
             VALID_EMAIL,
             "1a!saaaaa"
         );
@@ -99,9 +88,7 @@ describe("RegisterDto validation tests", () => {
 
     test("Receive an error when password contains no lowercase characters", async () => {
         // Arrange
-        const testDto : RegisterDto = new RegisterDto(
-            VALID_FIRSTNAME,
-            VALID_LASTNAME,
+        const testDto : LoginDto = new LoginDto(
             VALID_EMAIL,
             "1!AAAAAAAA"
         );
@@ -116,9 +103,7 @@ describe("RegisterDto validation tests", () => {
 
     test("Receive an error when password is null", async () => {
         // Arrange
-        const testDto : RegisterDto = new RegisterDto(
-            VALID_FIRSTNAME,
-            VALID_LASTNAME,
+        const testDto : LoginDto = new LoginDto(
             VALID_EMAIL,
             null!
         );
@@ -133,11 +118,39 @@ describe("RegisterDto validation tests", () => {
 
     test("Receive an error when password is undefined", async () => {
         // Arrange
-        const testDto : RegisterDto = new RegisterDto(
-            VALID_FIRSTNAME,
-            VALID_LASTNAME,
+        const testDto : LoginDto = new LoginDto(
             VALID_EMAIL,
             undefined!
+        );
+
+        // Act
+        const errors = await validate(testDto);
+
+        // Assert
+        expect(errors.length).toEqual(1);
+    });
+
+
+    test("Receive an error when email is null", async () => {
+        // Arrange
+        const testDto : LoginDto = new LoginDto(
+            null!,
+            VALID_PASSWORD
+        );
+
+        // Act
+        const errors = await validate(testDto);
+
+        // Assert
+        expect(errors.length).toEqual(1);
+    });
+
+
+    test("Receive an error when email is undefined", async () => {
+        // Arrange
+        const testDto : LoginDto = new LoginDto(
+            undefined!,
+            VALID_PASSWORD
         );
 
         // Act
