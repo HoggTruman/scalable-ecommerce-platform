@@ -1,23 +1,26 @@
+export const TEST_PASSWORD = "Password1";
+const encyrptedPassword = '$2b$10$QgyZC9ezeGsOudXboVhAM.hNt9b6wFGnPV7BqTRanzU8TuLmaEP72'; // bcrypt.hashSync(TEST_PASSWORD, 10);
+
 export const TEST_USERS = [
     {
         firstName: "firstName1",
         lastName: "lastName1",
         email: `email1`,
-        password: 'a'.repeat(60),
+        password: encyrptedPassword,
         registeredAt: 438918
     },
     {
         firstName: "firstName2",
         lastName: "lastName2",
         email: `email2`,
-        password: 'b'.repeat(60),
+        password: encyrptedPassword,
         registeredAt: 2358970
     },
     {
         firstName: "firstName3",
         lastName: "lastName3",
         email: `email3`,
-        password: 'c'.repeat(60),
+        password: encyrptedPassword,
         registeredAt: 9184317
     }
 ];
