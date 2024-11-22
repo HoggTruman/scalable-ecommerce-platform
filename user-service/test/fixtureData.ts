@@ -5,21 +5,21 @@ export const TEST_USERS = [
     {
         firstName: "firstName1",
         lastName: "lastName1",
-        email: `email1`,
+        email: "email1@example.com",
         password: encyrptedPassword,
         registeredAt: 438918
     },
     {
         firstName: "firstName2",
         lastName: "lastName2",
-        email: `email2`,
+        email: "email2@example.com",
         password: encyrptedPassword,
         registeredAt: 2358970
     },
     {
         firstName: "firstName3",
         lastName: "lastName3",
-        email: `email3`,
+        email: "email3@example.com",
         password: encyrptedPassword,
         registeredAt: 9184317
     }
