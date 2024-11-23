@@ -7,6 +7,7 @@ import { AppDataSource } from "./data-source";
 import { createJWT } from "./createJWT";
 import { LoginRepository } from "./respository/LoginRepository";
 import { RegisterDto } from "./dto/RegisterDto";
+import { TestDataSource } from "../test/test-data-source";
 
 
 const SigningKey = process.env.JWT_SIGNING_KEY
@@ -14,53 +15,66 @@ if (SigningKey === undefined) {
     throw Error("JWT_SIGNING_KEY environment variable must be set.");
 }
 
-const userRepository = new UserRepository(AppDataSource);
-const loginRepository = new LoginRepository(AppDataSource);
+const dataSource = process.env.NODE_ENV === "test"?
+    TestDataSource:
+    AppDataSource;
+
+const userRepository = new UserRepository(dataSource);
+const loginRepository = new LoginRepository(dataSource);
 
 const userRouter : Router = express.Router();
+userRouter.use(express.json());
 
 
 userRouter.get("/", (req: Request, res: Response) => {
-    res.send("User service reached!");
+    res.send("User service reached.");
 });
 
 
 userRouter.post("/login", (req: Request, res: Response) => {
-    const loginDto: LoginDto = req.body;
-    validateOrReject(loginDto, { 
-        forbidNonWhitelisted: true 
-    }).catch(errors => {
-        return res.status(400).send("Invalid Request.");
-    });
+    const loginDto= new LoginDto(
+        req.body?.email,
+        req.body?.password
+    );
 
-    userRepository.getUserByEmail(loginDto.email).then(async user => {
+    validateOrReject(loginDto, { 
+        forbidNonWhitelisted: true
+    }).then(async () => {
+        const user = await userRepository.getUserByEmail(loginDto.email)
         if (user === null ||
             await bcrypt.compare(loginDto.password, user.password) == false
         ) {
             return res.status(401).send("Incorrect email or password.");
         }
-
+    
         await loginRepository.addLogin(req.ip || "", user);
 
         return res.send(createJWT(user, SigningKey));
+    }).catch(errors => {
+        console.log(errors);
+        return res.status(400).send("Invalid Request Body.");
     });
 });
 
 
 userRouter.post("/register", (req: Request, res: Response) => {
-    const registerDto: RegisterDto = req.body;
+    const registerDto = new RegisterDto(
+        req.body?.firstName,
+        req.body?.lastName,
+        req.body?.email,
+        req.body?.password
+    );
+
     validateOrReject(registerDto, { 
         forbidNonWhitelisted: true 
-    }).catch(errors => {
-        return res.status(400).send("Invalid Request.");
-    });
-
-    userRepository.addUser(
-        registerDto.firstName,
-        registerDto.lastName,
-        registerDto.email,
-        registerDto.password
-    ).then(async user => {
+    }).then(async () => {
+        const user = await userRepository.addUser(
+            registerDto.firstName,
+            registerDto.lastName,
+            registerDto.email,
+            registerDto.password
+        )
+        
         if (user === null) {
             return res.status(401).send("User already registered with the provided email address.");
         }
@@ -68,7 +82,11 @@ userRouter.post("/register", (req: Request, res: Response) => {
         await loginRepository.addLogin(req.ip || "", user);
 
         return res.send(createJWT(user, SigningKey));
-    });
+    })
+    .catch(errors => {
+        console.log(errors);
+        return res.status(400).send("Invalid Request Body.");
+    });    
 });
 
 

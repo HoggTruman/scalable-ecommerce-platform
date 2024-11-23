@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
-import express, { Express } from 'express';
-import { userRouter } from './routes';
 import { AppDataSource } from './data-source';
+import { app } from './app';
 
 dotenv.config();
 
@@ -10,17 +9,14 @@ AppDataSource.initialize()
         console.log("Data Source has been initialized!")
     })
     .catch((err) => {
-        throw new Error(err);
+        throw Error(err);
     })
 
+const Port = process.env.PORT;
+if (Port === undefined) {
+    throw Error("PORT environment variable must be set.");
+}
 
-const app : Express = express();
-const port = process.env.PORT || 3000;
-
-app.set('trust proxy', true)
-app.use("/api/user", userRouter);
-app.use(express.json());
-
-app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
+app.listen(Port, () => {
+    console.log(`Server is running at http://localhost:${Port}`);
 });
