@@ -1,7 +1,7 @@
 import { User } from "../src/entity/User";
 import { Login } from "../src/entity/Login";
 import { TEST_LOGINS, TEST_USERS } from "./fixtureData";
-import { TestDataSource } from "./test-data-source";
+import { TestDataSource } from "../src/data-source";
 
 
 export class TestUtils {

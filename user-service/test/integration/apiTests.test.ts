@@ -2,8 +2,8 @@ import jwt from "jsonwebtoken";
 import request from "supertest";
 import { app } from "../../src/app";
 import { TEST_PASSWORD, TEST_USERS } from "../fixtureData";
-import { TestDataSource } from "../test-data-source";
 import { TestUtils } from "../TestUtils";
+import { TestDataSource } from "../../src/data-source";
 
 
 const UserEndpoint = "/api/user";

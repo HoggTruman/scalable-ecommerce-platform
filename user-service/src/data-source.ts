@@ -1,8 +1,8 @@
+import dotenv from 'dotenv';
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import dotenv from 'dotenv';
-import { User } from "./entity/User";
 import { Login } from "./entity/Login";
+import { User } from "./entity/User";
 
 dotenv.config();
 
@@ -21,3 +21,21 @@ export const AppDataSource = new DataSource({
     migrations: [],
     subscribers: [],
 });
+
+
+export const TestDataSource = new DataSource({
+    type: "better-sqlite3",
+    database: ":memory:",
+    synchronize: true,
+    logging: false,
+    entities: [User, Login],
+    migrations: [],
+    subscribers: [],
+});
+
+
+export function getDataSource() {
+    return process.env.NODE_ENV === "test"?
+        TestDataSource:
+        AppDataSource;
+}

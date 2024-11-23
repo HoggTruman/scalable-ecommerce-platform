@@ -1,9 +1,9 @@
 import { Repository } from "typeorm";
+import { TestDataSource } from "../src/data-source";
 import { Login } from "../src/entity/Login";
 import { User } from "../src/entity/User";
 import { TestUtils } from "./TestUtils";
 import { TEST_LOGINS, TEST_USERS } from "./fixtureData";
-import { TestDataSource } from "./test-data-source";
 
 let userRepo: Repository<User>;
 let loginRepo: Repository<Login>;

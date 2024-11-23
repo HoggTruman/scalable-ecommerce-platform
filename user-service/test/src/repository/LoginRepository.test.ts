@@ -1,10 +1,10 @@
 import { Repository } from "typeorm";
-import { User } from "../../../src/entity/User";
+import { TestDataSource } from "../../../src/data-source";
 import { Login } from "../../../src/entity/Login";
-import { TestDataSource } from "../../test-data-source";
-import { TestUtils } from "../../TestUtils";
+import { User } from "../../../src/entity/User";
 import { LoginRepository } from "../../../src/respository/LoginRepository";
 import { TEST_USERS } from "../../fixtureData";
+import { TestUtils } from "../../TestUtils";
 
 
 let userRepo: Repository<User>;

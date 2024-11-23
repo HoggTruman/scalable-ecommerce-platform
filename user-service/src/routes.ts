@@ -1,13 +1,12 @@
-import express, { Router, Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { LoginDto } from "./dto/LoginDto";
 import { validateOrReject } from "class-validator";
-import { UserRepository } from "./respository/UserRepository";
-import { AppDataSource } from "./data-source";
+import express, { Request, Response, Router } from "express";
 import { createJWT } from "./createJWT";
-import { LoginRepository } from "./respository/LoginRepository";
+import { getDataSource } from "./data-source";
+import { LoginDto } from "./dto/LoginDto";
 import { RegisterDto } from "./dto/RegisterDto";
-import { TestDataSource } from "../test/test-data-source";
+import { LoginRepository } from "./respository/LoginRepository";
+import { UserRepository } from "./respository/UserRepository";
 
 
 const SigningKey = process.env.JWT_SIGNING_KEY
@@ -15,9 +14,7 @@ if (SigningKey === undefined) {
     throw Error("JWT_SIGNING_KEY environment variable must be set.");
 }
 
-const dataSource = process.env.NODE_ENV === "test"?
-    TestDataSource:
-    AppDataSource;
+const dataSource = getDataSource();
 
 const userRepository = new UserRepository(dataSource);
 const loginRepository = new LoginRepository(dataSource);
