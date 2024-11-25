@@ -1,14 +1,13 @@
 {
   "name": "user-service",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
     "test": "jest --detectOpenHandles"
   },
-  "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "A service for handling user registration / logins.",
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
@@ -31,5 +30,9 @@
     "express": "^4.21.1",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.20"
+  },
+  "engines" : { 
+    "npm" : ">=10.0.0 <11.0.0",
+    "node" : ">=20.0.0 <21.0.0"
   }
 }
