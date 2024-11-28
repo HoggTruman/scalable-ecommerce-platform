@@ -10,7 +10,8 @@ WORKDIR /usr/src/app
 COPY package.json ./
 COPY package-lock.json ./
 
-RUN npm install
+RUN npm install\
+    && npm install typescript@5.6.3 -g
  
 COPY . .
 
@@ -18,4 +19,4 @@ RUN tsc
 
 EXPOSE 9001
 
-CMD node ./dist/index.js
+CMD node ./dist/src/index.js
