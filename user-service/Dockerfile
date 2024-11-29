@@ -1,22 +1,28 @@
 ARG NODE_VERSION=20
 
-FROM node:${NODE_VERSION}-alpine
+FROM node:${NODE_VERSION}-alpine AS builder
+WORKDIR /app
 
-ENV NODE_ENV production
+COPY . .
+
+RUN npm install \
+    && npm install typescript@5.6.3 -g \
+    && tsc
+    
 
 
+
+FROM node:${NODE_VERSION}-alpine AS final
 WORKDIR /usr/src/app
 
+COPY --from=builder ./app/dist ./dist
 COPY package.json ./
 COPY package-lock.json ./
 
-RUN npm install\
-    && npm install typescript@5.6.3 -g
- 
-COPY . .
+ENV NODE_ENV production
 
-RUN tsc
+RUN npm install
 
 EXPOSE 9001
 
-CMD node ./dist/src/index.js
+CMD npm start
