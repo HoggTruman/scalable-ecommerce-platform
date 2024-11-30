@@ -14,6 +14,13 @@ beforeAll(async () => {
     loginRepo = TestDataSource.getRepository(Login);
 });
 
+afterAll(async () => {
+    await TestDataSource.destroy();
+});
+
+
+
+
 describe("TestUtils Tests", () => {
     test("sets up correctly", async () => {
         // Ensure empty db

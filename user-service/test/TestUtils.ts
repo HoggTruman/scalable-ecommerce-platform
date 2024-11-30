@@ -7,11 +7,13 @@ import { TestDataSource } from "../src/data-source";
 export class TestUtils {
     public static async clearTables() : Promise<void>{
         const entities = TestDataSource.entityMetadatas;
+        const tableNames = entities.map((entity) => `"${entity.tableName}"`).join(", ");
+        await TestDataSource.query(`TRUNCATE ${tableNames} CASCADE;`);
 
-        for (const entity of entities) {
-            const repository = TestDataSource.getRepository(entity.name);
-            await repository.clear();
-        }
+        // for (const entity of entities) {
+        //     const repository = TestDataSource.getRepository(entity.name);
+        //     await repository.clear();
+        // }
     }
 
 

@@ -29,7 +29,7 @@ export class UserRepository {
         newUser.lastName = lastName;
         newUser.email = email;
         newUser.password = await bcrypt.hash(plainPassword, 10);
-        newUser.registeredAt = Date.now();
+        newUser.registeredAt = `${Date.now()}`;
 
         return await this._userRepo.save(newUser);
     }

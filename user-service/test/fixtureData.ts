@@ -7,21 +7,21 @@ export const TEST_USERS = [
         lastName: "lastName1",
         email: "email1@example.com",
         password: encyrptedPassword,
-        registeredAt: 438918
+        registeredAt: "438918"
     },
     {
         firstName: "firstName2",
         lastName: "lastName2",
         email: "email2@example.com",
         password: encyrptedPassword,
-        registeredAt: 2358970
+        registeredAt: "2358970"
     },
     {
         firstName: "firstName3",
         lastName: "lastName3",
         email: "email3@example.com",
         password: encyrptedPassword,
-        registeredAt: 9184317
+        registeredAt: "9184317"
     }
 ];
 
@@ -29,17 +29,17 @@ export const TEST_USERS = [
 export const TEST_LOGINS = [
     {
         ip: "ip1",
-        loginAt: 984931,
+        loginAt: "984931",
         user: TEST_USERS[0]
     },
     {
         ip: "ip2",
-        loginAt: 9849352,
+        loginAt: "9849352",
         user: TEST_USERS[0]
     },
     {
         ip: "ip3",
-        loginAt: 231513,
+        loginAt: "231513",
         user: TEST_USERS[1]
     },
 ]

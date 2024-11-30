@@ -14,7 +14,7 @@ export class LoginRepository {
     public async addLogin(userIP: string, user: User) : Promise<Login> {
         const newLogin : Login = new Login();
         newLogin.ip = userIP;
-        newLogin.loginAt = Date.now();
+        newLogin.loginAt = `${Date.now()}`;
         newLogin.user = user;
 
         return await this._loginRepo.save(newLogin);

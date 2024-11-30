@@ -9,8 +9,8 @@ export class Login {
     @Column()
     ip!: string;
 
-    @Column()
-    loginAt!: number;
+    @Column({type: "bigint"})
+    loginAt!: string;
 
     @ManyToOne(() => User, (user) => user.logins, {
         onDelete: "CASCADE",

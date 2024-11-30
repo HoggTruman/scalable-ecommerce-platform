@@ -18,9 +18,8 @@ export class User {
     @Column({length: 60})
     password!: string;
 
-    // as unix timestamp
-    @Column()
-    registeredAt!: number;
+    @Column({type: "bigint"})
+    registeredAt!: string;
 
     @OneToMany(() => Login, (login) => login.user, {
         cascade: true

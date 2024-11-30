@@ -17,6 +17,10 @@ beforeAll(async () => {
     loginRepo = TestDataSource.getRepository(Login);
 });
 
+afterAll(async () => {
+    await TestDataSource.destroy();
+});
+
 
 
 
