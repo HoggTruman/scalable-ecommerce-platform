@@ -6,16 +6,47 @@ import { User } from "./entity/User";
 
 dotenv.config();
 
-const dbPath = process.env.DB_PATH;
+const dbName = process.env.POSTGRES_DB;
+const dbPassword = process.env.POSTGRES_PASSWORD;
+const dbPort = process.env.POSTGRES_PORT;
+const dbTestPort = process.env.POSTGRES_TEST_PORT;
 
-if (dbPath === undefined) {
-    throw Error("DB_PATH environment variable must be set.");
-}  
+
+if (dbName === undefined) {
+    throw Error("POSTGRES_DB environment variable must be set.");
+}
+
+if (dbPassword === undefined) {
+    throw Error("POSTGRES_PASSWORD environment variable must be set.");
+}
+
+if (dbPort === undefined) {
+    throw Error("POSTGRES_PORT environment variable must be set.");
+}
+
+if (dbTestPort === undefined) {
+    throw Error("POSTGRES_TEST_PORT environment variable must be set.");
+}
+
+
+function getPort(port: string | undefined) : number {
+    const numPort = Number(port);
+
+    if (Number.isInteger(numPort) === false || numPort < 0) {
+        throw Error(`Invalid port provided: ${port}`)
+    }
+    return numPort;
+}
+
 
 export const AppDataSource = new DataSource({
-    type: "better-sqlite3",
-    database: dbPath,
-    synchronize: false,
+    type: "postgres",
+    host: process.env.PGHOST || "localhost",
+    port: getPort(dbPort),
+    database: dbName,
+    username: "postgres",
+    password: dbPassword,
+    synchronize: true, ///////////////////////////////////////
     logging: false,
     entities: [User, Login],
     migrations: [],
@@ -24,8 +55,12 @@ export const AppDataSource = new DataSource({
 
 
 export const TestDataSource = new DataSource({
-    type: "better-sqlite3",
-    database: ":memory:",
+    type: "postgres",
+    host: process.env.PGTESTHOST || "localhost",
+    port: getPort(dbTestPort),
+    database: "test",
+    username: "postgres",
+    password: "test",
     synchronize: true,
     logging: false,
     entities: [User, Login],

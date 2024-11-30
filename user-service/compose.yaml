@@ -1,0 +1,58 @@
+services:
+  api:
+    build:
+      context: .
+    environment:
+      - NODE_ENV=production
+      - PGHOST=db
+      - PGTESTHOST=db-test
+      - PORT=${PORT}      
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_TEST_PORT=${POSTGRES_TEST_PORT}
+      - JWT_SIGNING_KEY=${JWT_SIGNING_KEY}
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      db:
+        condition: service_healthy
+      db-test:
+        condition: service_healthy
+
+
+  db:
+    image: postgres:17.2
+    restart: always
+    user: postgres
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PGPORT=${POSTGRES_PORT}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+#    volumes:
+#      - 
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  db-test:
+    image: postgres:17.2
+    restart: always
+    user: postgres
+    environment:
+      - POSTGRES_DB=test
+      - POSTGRES_PASSWORD=test
+      - PGPORT=${POSTGRES_TEST_PORT}
+    ports:
+      - ${POSTGRES_TEST_PORT}:${POSTGRES_TEST_PORT}
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    

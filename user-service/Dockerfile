@@ -17,7 +17,6 @@ WORKDIR /usr/src/app
 
 COPY --from=builder ./app/dist ./dist
 COPY package.json ./
-COPY package-lock.json ./
 
 ENV NODE_ENV production
 
