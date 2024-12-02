@@ -9,7 +9,6 @@ dotenv.config();
 const dbName = process.env.POSTGRES_DB;
 const dbPassword = process.env.POSTGRES_PASSWORD;
 const dbPort = process.env.POSTGRES_PORT;
-const dbTestPort = process.env.POSTGRES_TEST_PORT;
 
 
 if (dbName === undefined) {
@@ -22,10 +21,6 @@ if (dbPassword === undefined) {
 
 if (dbPort === undefined) {
     throw Error("POSTGRES_PORT environment variable must be set.");
-}
-
-if (dbTestPort === undefined) {
-    throw Error("POSTGRES_TEST_PORT environment variable must be set.");
 }
 
 
@@ -52,25 +47,3 @@ export const AppDataSource = new DataSource({
     migrations: [],
     subscribers: [],
 });
-
-
-export const TestDataSource = new DataSource({
-    type: "postgres",
-    host: process.env.PGTESTHOST || "localhost",
-    port: getPort(dbTestPort),
-    database: "test",
-    username: "postgres",
-    password: "test",
-    synchronize: true,
-    logging: false,
-    entities: [User, Login],
-    migrations: [],
-    subscribers: [],
-});
-
-
-export function getDataSource() {
-    return process.env.NODE_ENV === "test"?
-        TestDataSource:
-        AppDataSource;
-}

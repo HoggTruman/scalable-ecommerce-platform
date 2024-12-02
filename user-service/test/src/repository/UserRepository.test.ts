@@ -1,15 +1,16 @@
 import { Repository } from "typeorm";
-import { TestDataSource } from "../../../src/data-source";
 import { Login } from "../../../src/entity/Login";
 import { User } from "../../../src/entity/User";
 import { UserRepository } from "../../../src/respository/UserRepository";
 import { TEST_USERS } from "../../fixtureData";
 import { TestUtils } from "../../TestUtils";
+import { createTestDataSource } from "../../test-data-source";
 
 
 let userRepo: Repository<User>;
 let loginRepo: Repository<Login>;
 
+const TestDataSource = createTestDataSource(Number(process.env.POSTGRES_TEST_PORT) || 8101);
 
 beforeAll(async () => {
     await TestDataSource.initialize()
@@ -26,8 +27,8 @@ afterAll(async () => {
 
 describe("UserRepository Tests", () => {
     beforeEach(async () => {
-        await TestUtils.clearTables();
-        await TestUtils.addFixtureData();        
+        await TestUtils.clearTables(TestDataSource);
+        await TestUtils.addFixtureData(TestDataSource);        
     });
 
 

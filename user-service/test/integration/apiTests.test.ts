@@ -1,22 +1,25 @@
 import jwt from "jsonwebtoken";
 import request from "supertest";
-import { app } from "../../src/app";
+import { createApp } from "../../src/app";
 import { TEST_PASSWORD, TEST_USERS } from "../fixtureData";
 import { TestUtils } from "../TestUtils";
-import { TestDataSource } from "../../src/data-source";
+import { createTestDataSource } from "../test-data-source";
 
 
 const UserEndpoint = "/api/user";
 const LoginEndpoint = "/api/user/login";
 const RegisterEndpoint = "/api/user/register";
 
+const TestDataSource = createTestDataSource(Number(process.env.POSTGRES_TEST_PORT) || 8101);
+let App = createApp(TestDataSource);
+
 beforeAll(async () => {
     await TestDataSource.initialize()
 })
 
 beforeEach(async () => {
-    await TestUtils.clearTables();
-    await TestUtils.addFixtureData();
+    await TestUtils.clearTables(TestDataSource);
+    await TestUtils.addFixtureData(TestDataSource);
 })
 
 afterAll(async () => {
@@ -27,7 +30,7 @@ afterAll(async () => {
 describe("API tests", () => {
     describe("GET /api/user", () => {
         test("Response contains status code 200", done => {
-            request(app)
+            request(App)
                 .get(UserEndpoint)
                 .expect(200)
                 .end((err, res) => {
@@ -49,7 +52,7 @@ describe("API tests", () => {
                 password: TEST_PASSWORD
             };
 
-            request(app)
+            request(App)
                 .post(LoginEndpoint)
                 .send(body)
                 .expect(200)
@@ -66,7 +69,7 @@ describe("API tests", () => {
 
 
         test("Returns status code 400 with empty body", done => {
-            request(app)
+            request(App)
                 .post(LoginEndpoint)
                 .send({})
                 .expect(400)
@@ -83,7 +86,7 @@ describe("API tests", () => {
                 password: TEST_PASSWORD
             };
 
-            request(app)
+            request(App)
                 .post(LoginEndpoint)
                 .send(body)
                 .expect(400)
@@ -102,7 +105,7 @@ describe("API tests", () => {
                 password: "Aa1abcd"
             };
 
-            request(app)
+            request(App)
                 .post(LoginEndpoint)
                 .send(body)
                 .expect(400)
@@ -121,7 +124,7 @@ describe("API tests", () => {
                 password: "Aa1abcdfakggwugkufgkuagkfugkufafgakuafkgu"
             };
 
-            request(app)
+            request(App)
                 .post(LoginEndpoint)
                 .send(body)
                 .expect(400)
@@ -140,7 +143,7 @@ describe("API tests", () => {
                 password: "aa1abcdfaf"
             };
 
-            request(app)
+            request(App)
                 .post(LoginEndpoint)
                 .send(body)
                 .expect(400)
@@ -159,7 +162,7 @@ describe("API tests", () => {
                 password: "AA1ABCDEF"
             };
 
-            request(app)
+            request(App)
                 .post(LoginEndpoint)
                 .send(body)
                 .expect(400)
@@ -178,7 +181,7 @@ describe("API tests", () => {
                 password: "AaABdcEFfos"
             };
 
-            request(app)
+            request(App)
                 .post(LoginEndpoint)
                 .send(body)
                 .expect(400)
@@ -195,7 +198,7 @@ describe("API tests", () => {
                 password: TEST_PASSWORD
             };
 
-            request(app)
+            request(App)
                 .post(LoginEndpoint)
                 .send(body)
                 .expect(401)
@@ -214,7 +217,7 @@ describe("API tests", () => {
                 password: "ValidButIncorrect1"
             };
 
-            request(app)
+            request(App)
                 .post(LoginEndpoint)
                 .send(body)
                 .expect(401)
@@ -237,7 +240,7 @@ describe("API tests", () => {
                 password: TEST_PASSWORD
             };
 
-            request(app)
+            request(App)
                 .post(RegisterEndpoint)
                 .send(body)
                 .expect(200)
@@ -254,7 +257,7 @@ describe("API tests", () => {
 
 
         test("Returns status code 400 with empty body", done => {
-            request(app)
+            request(App)
                 .post(RegisterEndpoint)
                 .send({})
                 .expect(400)
@@ -273,7 +276,7 @@ describe("API tests", () => {
                 password: TEST_PASSWORD
             };
 
-            request(app)
+            request(App)
                 .post(RegisterEndpoint)
                 .send(body)
                 .expect(400)
@@ -292,7 +295,7 @@ describe("API tests", () => {
                 password: TEST_PASSWORD
             };
 
-            request(app)
+            request(App)
                 .post(RegisterEndpoint)
                 .send(body)
                 .expect(400)
@@ -311,7 +314,7 @@ describe("API tests", () => {
                 password: TEST_PASSWORD
             };
 
-            request(app)
+            request(App)
                 .post(RegisterEndpoint)
                 .send(body)
                 .expect(400)
@@ -330,7 +333,7 @@ describe("API tests", () => {
                 password: "Aa1abcd"
             };
 
-            request(app)
+            request(App)
                 .post(RegisterEndpoint)
                 .send(body)
                 .expect(400)
@@ -349,7 +352,7 @@ describe("API tests", () => {
                 password: "Aa1abcdfakggwugkufgkuagkfugkufafgakuafkgu"
             };
 
-            request(app)
+            request(App)
                 .post(RegisterEndpoint)
                 .send(body)
                 .expect(400)
@@ -368,7 +371,7 @@ describe("API tests", () => {
                 password: "aa1abcdfaf"
             };
 
-            request(app)
+            request(App)
                 .post(RegisterEndpoint)
                 .send(body)
                 .expect(400)
@@ -387,7 +390,7 @@ describe("API tests", () => {
                 password: "AA1ABCDEF"
             };
 
-            request(app)
+            request(App)
                 .post(RegisterEndpoint)
                 .send(body)
                 .expect(400)
@@ -406,7 +409,7 @@ describe("API tests", () => {
                 password: "AaABdcEFfos"
             };
 
-            request(app)
+            request(App)
                 .post(RegisterEndpoint)
                 .send(body)
                 .expect(400)
@@ -427,7 +430,7 @@ describe("API tests", () => {
                 password: TEST_PASSWORD
             };
 
-            request(app)
+            request(App)
                 .post(RegisterEndpoint)
                 .send(body)
                 .expect(401)

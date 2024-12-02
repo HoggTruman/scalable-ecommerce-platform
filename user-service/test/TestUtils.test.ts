@@ -1,12 +1,14 @@
 import { Repository } from "typeorm";
-import { TestDataSource } from "../src/data-source";
 import { Login } from "../src/entity/Login";
 import { User } from "../src/entity/User";
 import { TestUtils } from "./TestUtils";
 import { TEST_LOGINS, TEST_USERS } from "./fixtureData";
+import { createTestDataSource } from "./test-data-source";
 
 let userRepo: Repository<User>;
 let loginRepo: Repository<Login>;
+
+const TestDataSource = createTestDataSource(Number(process.env.POSTGRES_TEST_PORT) || 8101);
 
 beforeAll(async () => {
     await TestDataSource.initialize()
@@ -24,12 +26,12 @@ afterAll(async () => {
 describe("TestUtils Tests", () => {
     test("sets up correctly", async () => {
         // Ensure empty db
-        await TestUtils.clearTables();
+        await TestUtils.clearTables(TestDataSource);
         expect(await userRepo.find()).toHaveLength(0);
         expect(await loginRepo.find()).toHaveLength(0);
 
         // Ensure test data is present
-        await TestUtils.addFixtureData();
+        await TestUtils.addFixtureData(TestDataSource);
 
         const users = await userRepo.find();
         expect(users).toHaveLength(TEST_USERS.length);
@@ -37,7 +39,7 @@ describe("TestUtils Tests", () => {
         expect(logins).toHaveLength(TEST_LOGINS.length);
 
         // Ensure empty db
-        await TestUtils.clearTables();
+        await TestUtils.clearTables(TestDataSource);
         expect(await userRepo.find()).toHaveLength(0);
         expect(await loginRepo.find()).toHaveLength(0);
     });

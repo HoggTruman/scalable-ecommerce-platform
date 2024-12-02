@@ -1,15 +1,15 @@
 import dotenv from 'dotenv';
-import { app } from './app';
-import { getDataSource } from './data-source';
+import { createApp } from './app';
+import { AppDataSource } from './data-source';
 
 dotenv.config();
 
-const dataSource = getDataSource();
-
 async function main() {
     try {
-        await dataSource.initialize();
+        await AppDataSource.initialize();
         console.log("Data Source has been initialized!");
+
+        const app = createApp(AppDataSource);        
 
         const Port = process.env.PORT;
         if (Port === undefined) {
