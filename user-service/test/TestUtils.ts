@@ -5,6 +5,23 @@ import { DataSource } from "typeorm";
 
 
 export class TestUtils {
+    public static createTestDataSource(port: number) {
+        return new DataSource({
+            type: "postgres",
+            host: "localhost",
+            port: port,
+            database: "test",
+            username: "postgres",
+            password: "test",
+            synchronize: true,
+            logging: false,
+            entities: [User, Login],
+            migrations: [],
+            subscribers: [],
+        });
+    }
+    
+
     public static async clearTables(dataSource: DataSource) : Promise<void>{
         const entities = dataSource.entityMetadatas;
         const tableNames = entities.map((entity) => `"${entity.tableName}"`).join(", ");

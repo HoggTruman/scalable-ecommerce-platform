@@ -3,14 +3,13 @@ import request from "supertest";
 import { createApp } from "../../src/app";
 import { TEST_PASSWORD, TEST_USERS } from "../fixtureData";
 import { TestUtils } from "../TestUtils";
-import { createTestDataSource } from "../test-data-source";
 
 
 const UserEndpoint = "/api/user";
 const LoginEndpoint = "/api/user/login";
 const RegisterEndpoint = "/api/user/register";
 
-const TestDataSource = createTestDataSource(Number(process.env.POSTGRES_TEST_PORT) || 8101);
+const TestDataSource = TestUtils.createTestDataSource(Number(process.env.POSTGRES_TEST_PORT) || 8101);
 let App = createApp(TestDataSource);
 
 beforeAll(async () => {

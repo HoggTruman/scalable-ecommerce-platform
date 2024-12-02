@@ -4,13 +4,12 @@ import { User } from "../../../src/entity/User";
 import { LoginRepository } from "../../../src/respository/LoginRepository";
 import { TEST_USERS } from "../../fixtureData";
 import { TestUtils } from "../../TestUtils";
-import { createTestDataSource } from "../../test-data-source";
 
 
 let userRepo: Repository<User>;
 let loginRepo: Repository<Login>;
 
-const TestDataSource = createTestDataSource(Number(process.env.POSTGRES_TEST_PORT) || 8101);
+const TestDataSource = TestUtils.createTestDataSource(Number(process.env.POSTGRES_TEST_PORT) || 8101);
 
 beforeAll(async () => {
     await TestDataSource.initialize()
