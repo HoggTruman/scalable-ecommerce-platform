@@ -1,5 +1,8 @@
+import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers/postgresql";
+import { Express } from "express";
 import jwt from "jsonwebtoken";
 import request from "supertest";
+import { DataSource } from "typeorm";
 import { createApp } from "../../src/app";
 import { TEST_PASSWORD, TEST_USERS } from "../fixtureData";
 import { TestUtils } from "../TestUtils";
@@ -9,21 +12,29 @@ const UserEndpoint = "/api/user";
 const LoginEndpoint = "/api/user/login";
 const RegisterEndpoint = "/api/user/register";
 
-const TestDataSource = TestUtils.createTestDataSource(Number(process.env.POSTGRES_TEST_PORT) || 8101);
-let App = createApp(TestDataSource);
+let TestDataSource : DataSource;
+let testContainer : StartedPostgreSqlContainer;
+let App : Express;
+
 
 beforeAll(async () => {
-    await TestDataSource.initialize()
-})
+    testContainer = await new PostgreSqlContainer("postgres:17.2").start();
+    TestDataSource = TestUtils.createTestDataSource(testContainer.getFirstMappedPort());
+    await TestDataSource.initialize();
+    App = createApp(TestDataSource);
+}, 50000);
+
+afterAll(async () => {
+    await TestDataSource.destroy();
+    await testContainer.stop();
+});
 
 beforeEach(async () => {
     await TestUtils.clearTables(TestDataSource);
     await TestUtils.addFixtureData(TestDataSource);
 })
 
-afterAll(async () => {
-    await TestDataSource.destroy()
-});
+
 
 
 describe("API tests", () => {
@@ -36,8 +47,7 @@ describe("API tests", () => {
                     if (err) return done(err);
                     return done();
                 });
-        });
-        
+        });        
     });
 
 

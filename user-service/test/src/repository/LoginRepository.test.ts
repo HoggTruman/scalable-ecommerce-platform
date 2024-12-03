@@ -1,4 +1,5 @@
-import { Repository } from "typeorm";
+import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers/postgresql";
+import { DataSource, Repository } from "typeorm";
 import { Login } from "../../../src/entity/Login";
 import { User } from "../../../src/entity/User";
 import { LoginRepository } from "../../../src/respository/LoginRepository";
@@ -8,17 +9,20 @@ import { TestUtils } from "../../TestUtils";
 
 let userRepo: Repository<User>;
 let loginRepo: Repository<Login>;
-
-const TestDataSource = TestUtils.createTestDataSource(Number(process.env.POSTGRES_TEST_PORT) || 8101);
+let TestDataSource : DataSource;
+let testContainer : StartedPostgreSqlContainer;
 
 beforeAll(async () => {
-    await TestDataSource.initialize()
+    testContainer = await new PostgreSqlContainer("postgres:17.2").start();
+    TestDataSource = TestUtils.createTestDataSource(testContainer.getFirstMappedPort());
+    await TestDataSource.initialize();
     userRepo = TestDataSource.getRepository(User);
-    loginRepo = TestDataSource.getRepository(Login);
-});
+    loginRepo = TestDataSource.getRepository(Login)
+}, 50000);
 
 afterAll(async () => {
     await TestDataSource.destroy();
+    await testContainer.stop();
 });
 
 
