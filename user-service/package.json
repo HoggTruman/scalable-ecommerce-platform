@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "A service for handling user registration / logins.",
   "devDependencies": {
+    "@testcontainers/postgresql": "^10.15.0",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
@@ -19,6 +20,7 @@
     "@types/supertest": "^6.0.2",
     "jest": "^29.7.0",
     "supertest": "^7.0.0",
+    "testcontainers": "^10.15.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"

@@ -5,13 +5,13 @@ import { DataSource } from "typeorm";
 
 
 export class TestUtils {
-    public static createTestDataSource(port: number) {
+    public static createTestDataSource(port: number) : DataSource {
         return new DataSource({
             type: "postgres",
             host: "localhost",
             port: port,
             database: "test",
-            username: "postgres",
+            username: "test",
             password: "test",
             synchronize: true,
             logging: false,
