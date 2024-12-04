@@ -1,8 +1,7 @@
-import dotenv from 'dotenv';
 import { createApp } from './app';
 import { AppDataSource } from './data-source';
+import { getEnv } from './utility/getEnv';
 
-dotenv.config();
 
 async function main() {
     try {
@@ -11,13 +10,10 @@ async function main() {
 
         const app = createApp(AppDataSource);        
 
-        const Port = process.env.PORT;
-        if (Port === undefined) {
-            throw Error("PORT environment variable must be set.");
-        }
+        const port = getEnv("PORT");
 
-        app.listen(Port, () => {
-            console.log(`Server is running at http://localhost:${Port}`);
+        app.listen(port, () => {
+            console.log(`Server is running at http://localhost:${port}`);
         });
     } catch (err) {
         throw err;

@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import { validateOrReject } from "class-validator";
-import dotenv from "dotenv";
 import express, { Request, Response, Router } from "express";
 import { DataSource } from "typeorm";
 import { createJWT } from "./createJWT";
@@ -8,15 +7,11 @@ import { LoginDto } from "./dto/LoginDto";
 import { RegisterDto } from "./dto/RegisterDto";
 import { LoginRepository } from "./respository/LoginRepository";
 import { UserRepository } from "./respository/UserRepository";
-
-dotenv.config();
+import { getEnv } from "./utility/getEnv";
 
 
 function createUserRouter(dataSource: DataSource) : Router {
-    const SigningKey = process.env.JWT_SIGNING_KEY
-    if (SigningKey === undefined) {
-        throw Error("JWT_SIGNING_KEY environment variable must be set.");
-    }
+    const SigningKey = getEnv("JWT_SIGNING_KEY");
 
     const userRepository = new UserRepository(dataSource);
     const loginRepository = new LoginRepository(dataSource);
