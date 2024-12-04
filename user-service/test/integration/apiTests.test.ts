@@ -447,7 +447,49 @@ describe("API tests", () => {
                     if (err) return done(err);
                     return done();
                 });
-        })
+        });
+    });
 
+
+
+    
+    describe("Multiple Endpoint Tests", () => { 
+        test("POST /api/user/register into POST /api/user/login for same user returns 200", done => {
+            // Arrange
+            const registerBody = {
+                firstName: "testFirstName",
+                lastName: "testLastName",
+                email: "newUser@example.com",
+                password: TEST_PASSWORD
+            };
+
+            const loginBody = {
+                email: registerBody.email,
+                password: registerBody.password
+            };
+
+            // Act + Assert
+            request(App)
+                .post(RegisterEndpoint)
+                .send(registerBody)
+                .expect(200)
+                .end((err, res) => {
+                    if (err) return done(err);
+
+                    request(App)
+                        .post(LoginEndpoint)
+                        .send(loginBody)
+                        .expect(200)
+                        .end((err, res) => {
+                            if (err) return done(err);
+                            const decoded = jwt.decode(res.text);
+                            expect(decoded).toHaveProperty('customer_id');
+                            expect(decoded).toHaveProperty('iat');
+                            expect(decoded).toHaveProperty('exp');
+                            expect(decoded).toHaveProperty('iss');
+                            return done();
+                        });
+                });
+        });
     });
 });
