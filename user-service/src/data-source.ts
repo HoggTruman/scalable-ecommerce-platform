@@ -5,13 +5,13 @@ import { User } from "./entity/User";
 import { getEnv } from './utility/getEnv';
 
 
-function getPort(port: string | undefined) : number {
-    const numPort = Number(port);
+function getPort(port: string) : number {
+    const intPort = parseInt(port, 10);
 
-    if (Number.isInteger(numPort) === false || numPort < 0) {
+    if (Number.isNaN(intPort) || intPort < 0) {
         throw Error(`Invalid port provided: ${port}`)
     }
-    return numPort;
+    return intPort;
 }
 
 
