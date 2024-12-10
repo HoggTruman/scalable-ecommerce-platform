@@ -15,7 +15,7 @@ RUN npm install \
 FROM node:${NODE_VERSION}-alpine AS final
 WORKDIR /usr/src/app
 
-COPY --from=builder ./app/dist ./dist
+COPY --from=builder ./app/dist/src ./dist/src
 COPY package.json ./
 
 ENV NODE_ENV production
