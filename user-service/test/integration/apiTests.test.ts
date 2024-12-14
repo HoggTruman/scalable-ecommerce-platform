@@ -19,7 +19,9 @@ let App : Express;
 
 beforeAll(async () => {
     testContainer = await new PostgreSqlContainer("postgres:17.2").start();
-    TestDataSource = TestUtils.createTestDataSource(testContainer.getFirstMappedPort());
+    TestDataSource = TestUtils.createTestDataSource(
+        testContainer.getHost(),
+        testContainer.getFirstMappedPort());
     await TestDataSource.initialize();
     App = createApp(TestDataSource);
 }, 50000);
