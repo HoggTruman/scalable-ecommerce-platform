@@ -1,0 +1,43 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+        service:
+          [
+            user-service,
+          ]
+      
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ${{ matrix.service }}
+
+      - name: Build 
+        run: npm run build
+        working-directory: ${{ matrix.service }}
+
+      - name: Run tests
+        run: npm test
+        working-directory: ${{ matrix.service }}      
