@@ -7,6 +7,7 @@ import { createApp } from "../../src/app";
 import { TEST_PASSWORD, TEST_USERS } from "../fixtureData";
 import { TestUtils } from "../TestUtils";
 
+const TEST_SIGNING_KEY = "TESTSIGNINGKEY!!!!!!!!!!!!!!!!!!!!!!";
 
 const UserEndpoint = "/api/user";
 const LoginEndpoint = "/api/user/login";
@@ -23,7 +24,7 @@ beforeAll(async () => {
         testContainer.getHost(),
         testContainer.getFirstMappedPort());
     await TestDataSource.initialize();
-    App = createApp(TestDataSource);
+    App = createApp(TestDataSource, TEST_SIGNING_KEY);
 }, 50000);
 
 afterAll(async () => {

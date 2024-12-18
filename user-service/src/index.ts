@@ -8,7 +8,7 @@ async function main() {
         await AppDataSource.initialize();
         console.log("Data Source has been initialized!");
 
-        const app = createApp(AppDataSource);        
+        const app = createApp(AppDataSource, getEnv("JWT_SIGNING_KEY"));        
 
         const port = getEnv("PORT");
 
