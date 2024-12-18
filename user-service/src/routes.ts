@@ -7,12 +7,9 @@ import { LoginDto } from "./dto/LoginDto";
 import { RegisterDto } from "./dto/RegisterDto";
 import { LoginRepository } from "./respository/LoginRepository";
 import { UserRepository } from "./respository/UserRepository";
-import { getEnv } from "./utility/getEnv";
 
 
-function createUserRouter(dataSource: DataSource) : Router {
-    const SigningKey = getEnv("JWT_SIGNING_KEY");
-
+function createUserRouter(dataSource: DataSource, signingKey: string) : Router {
     const userRepository = new UserRepository(dataSource);
     const loginRepository = new LoginRepository(dataSource);
 
@@ -43,7 +40,9 @@ function createUserRouter(dataSource: DataSource) : Router {
         
             await loginRepository.addLogin(req.ip || "", user);
 
-            return res.send(createJWT(user, SigningKey));
+            const jwt = createJWT(user, signingKey);
+
+            return res.send(jwt);
         }).catch(errors => {
             console.log(errors);
             return res.status(400).send("Invalid Request Body.");
@@ -75,7 +74,9 @@ function createUserRouter(dataSource: DataSource) : Router {
 
             await loginRepository.addLogin(req.ip || "", user);
 
-            return res.send(createJWT(user, SigningKey));
+            const jwt = createJWT(user, signingKey);
+
+            return res.send(jwt);
         })
         .catch(errors => {
             console.log(errors);
@@ -88,4 +89,3 @@ function createUserRouter(dataSource: DataSource) : Router {
 
 
 export { createUserRouter };
-
