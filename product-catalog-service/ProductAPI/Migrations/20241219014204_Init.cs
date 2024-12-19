@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace ProductCatalogService.Migrations
+namespace ProductAPI.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration

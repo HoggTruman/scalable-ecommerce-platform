@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProductCatalogService.Models;
+namespace ProductAPI.Models;
 
 
 [Table("Product")]

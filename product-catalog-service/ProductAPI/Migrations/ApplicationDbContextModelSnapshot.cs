@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using ProductCatalogService.Data;
+using ProductAPI.Data;
 
 #nullable disable
 
-namespace ProductCatalogService.Migrations
+namespace ProductAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -21,7 +21,7 @@ namespace ProductCatalogService.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ProductCatalogService.Models.Product", b =>
+            modelBuilder.Entity("ProductAPI.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("integer");
