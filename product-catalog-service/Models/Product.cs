@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace product_catalog_service.Models;
+namespace ProductCatalogService.Models;
+
 
 [Table("Product")]
 public class Product
