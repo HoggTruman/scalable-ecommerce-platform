@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProductAPI.Data;
+using ProductAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => {
     options.UseNpgsql(@"Host=myserver;Username=postgres;Password=postgres;Database=product-catalog-service");
 });
 
+
+builder.Services.AddScoped<ProductRepository>();
 
 
 
