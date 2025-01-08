@@ -14,8 +14,8 @@ public class CreateProductDto : IValidatableObject
     [MinLength(1)]
     public required string Description { get; set; }
 
-    [Range(0, double.MaxValue, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-    public required double Price { get; set; }
+    [Range(0, 100_000, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+    public required decimal Price { get; set; }
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
@@ -26,12 +26,12 @@ public class CreateProductDto : IValidatableObject
         
     }
 
-    private static bool IsTwoDecimalPlacesOrLess(double d)
+    private static bool IsTwoDecimalPlacesOrLess(decimal d)
     {
-        double decimalPart = Math.Abs(d - Math.Truncate(d));
+        decimal decimalPart = Math.Abs(d - Math.Truncate(d));
 
         // This is greater than 0 if d goes beyond 2 decimal places
-        double excess = decimalPart * 100 - Math.Truncate(decimalPart * 100);
+        decimal excess = decimalPart * 100 - Math.Truncate(decimalPart * 100);
 
         return excess == 0;
     }
