@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ProductAPI.DTOs;
 using ProductAPI.Mappers;
-using ProductAPI.Models;
 using ProductAPI.Repositories;
 
 namespace ProductAPI.Controllers;
@@ -11,9 +9,9 @@ namespace ProductAPI.Controllers;
 [ApiController]
 public class ProductController : ControllerBase
 {
-    private readonly ProductRepository _repository;
+    private readonly IProductRepository _repository;
 
-    public ProductController(ProductRepository repository)
+    public ProductController(IProductRepository repository)
     {
         _repository = repository;
     }

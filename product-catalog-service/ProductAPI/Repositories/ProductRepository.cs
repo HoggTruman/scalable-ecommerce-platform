@@ -5,7 +5,7 @@ using ProductAPI.Models;
 
 namespace ProductAPI.Repositories;
 
-public class ProductRepository
+public class ProductRepository : IProductRepository
 {
     private readonly ApplicationDbContext _context;
 
@@ -29,6 +29,12 @@ public class ProductRepository
     }
 
 
+    /// <summary>
+    /// Creates a new product in the database if a product does not already exist
+    /// with the provided id.
+    /// </summary>
+    /// <param name="createProductDto"></param>
+    /// <returns>A Product if successful. Otherwise, null.</returns>
     public Product? Create(CreateProductDto createProductDto)
     {
         Product? existingProduct = _context.Products.FirstOrDefault(x => x.Id == createProductDto.Id);
