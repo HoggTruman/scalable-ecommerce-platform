@@ -1,0 +1,42 @@
+name: Build and Test dotnet
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        dotnet-version: [8.0.x]
+        service:
+          [
+            product-catalog-service,
+          ]   
+          
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup dotnet ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Install dependencies
+        run: dotnet restore
+        working-directory: ${{ matrix.service }}
+
+      - name: Build
+        run: dotnet build
+        working-directory: ${{ matrix.service }}
+
+      - name: Test with the dotnet CLI
+        run: dotnet test
+        working-directory: ${{ matrix.service }}
