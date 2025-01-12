@@ -78,7 +78,7 @@ public class ProductRepository : IProductRepository
 
     public Product? AddStock(Product product, int amount)
     {
-        bool isMaxStockExceeded = int.MaxValue - product.Stock - amount > 0;
+        bool isMaxStockExceeded = int.MaxValue - product.Stock - amount < 0;
 
         if (amount <= 0 ||
             isMaxStockExceeded)
