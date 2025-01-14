@@ -87,6 +87,7 @@ public class ProductRepository : IProductRepository
         }
 
         product.Stock += amount;
+        _context.Products.Update(product);
         _context.SaveChanges();
 
         return product;
@@ -101,7 +102,8 @@ public class ProductRepository : IProductRepository
             return null;
         }
 
-        product.Stock -= amount;
+        product.Stock -= amount; 
+        _context.Products.Update(product);
         _context.SaveChanges();
 
         return product;
